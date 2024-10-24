@@ -60,7 +60,12 @@ async function handleGetUrl(req, res, next){
 
         const longUrl = await url.findOne(query, null, options);
 
-        return res.status(200).json({msg: 'success', data: longUrl.long});
+        if(longUrl){
+            return res.status(200).json({msg: 'success', data: longUrl.long});
+        }
+
+        return res.status(404).json({ msg: 'URL not found' });
+        
     }catch(e){
         next(e);
     }
