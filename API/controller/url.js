@@ -7,7 +7,7 @@ async function handleNewUrl(req, res, next){
         }
         
         const urlSchema = {
-            short: 'example/1799',
+            short: '5991',
             long: req.body.fullUrl,
         }
 
@@ -21,7 +21,26 @@ async function handleNewUrl(req, res, next){
     }
 }
 
+async function handleGetUrl(req, res, next){
+    try{
+        const code = req.params.code;
+
+        const query = {'short': code};
+
+        const options = {
+            projection: {_id: 0, long: 1}
+        }
+
+        const longUrl = await url.findOne(query, null, options);
+
+        return res.status(200).json({msg: 'success', data: longUrl.long});
+    }catch(e){
+        next(e);
+    }
+}
+
 
 export {
-    handleNewUrl
+    handleNewUrl,
+    handleGetUrl
 }

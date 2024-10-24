@@ -10,13 +10,16 @@ const app = express();
 app.use(express.urlencoded({extended: false}));
 app.use(errorHandler);
 
+//TODO: Another middleware to log all the data
+
+
 //Connecting to the DB
 connectDB(mongo_url).then( () => {
     console.log('Mongo DB Connected');
 
     //Starting server
     app.listen(port, () => {
-        console.log('Server Started on port : ' + PORT);
+        console.log('Server Started on port : ' + port);
     });
 
 }).catch((e) => {
