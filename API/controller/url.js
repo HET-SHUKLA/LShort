@@ -1,5 +1,6 @@
 import {url} from '../models/UrlSchema.js';
 import Hashids from 'hashids';
+import validator from 'validator';
 
 function generateCodeFromUrl(shortU){
     const salt = shortU+Date.now();
@@ -23,8 +24,8 @@ async function handleNewUrl(req, res, next){
 
         const full = req.body.fullUrl;
 
-        if(!full){
-            return res.status(400).json({msg: 'Provide a URL'});
+        if(!full || validator.isURL(full)){
+            return res.status(400).json({msg: 'Provide a valid URL'});
         }
 
         const ans = await findExistingUrl(full);
@@ -65,7 +66,7 @@ async function handleGetUrl(req, res, next){
         }
 
         return res.status(404).json({ msg: 'URL not found' });
-        
+
     }catch(e){
         next(e);
     }
