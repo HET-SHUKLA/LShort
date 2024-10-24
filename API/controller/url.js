@@ -2,6 +2,13 @@ import {url} from '../models/UrlSchema.js';
 import Hashids from 'hashids';
 import validator from 'validator';
 
+async function findExistingShort(short){
+    const query = {'short': short};
+
+    return await url.findOne(query);
+}
+
+
 function generateCodeFromUrl(shortU){
     const salt = shortU+Date.now();
     const hashids = new Hashids(salt, 5);
@@ -24,7 +31,7 @@ async function handleNewUrl(req, res, next){
 
         const full = req.body.fullUrl;
 
-        if(!full || validator.isURL(full)){
+        if(!full || !validator.isURL(full)){
             return res.status(400).json({msg: 'Provide a valid URL'});
         }
 
@@ -34,8 +41,14 @@ async function handleNewUrl(req, res, next){
             return res.status(201).json({msg: 'success', data: ans.short});
         }
 
+        //Checking if short is exist or not.
+        let hashUrl;
+        do{
+            hashUrl = generateCodeFromUrl(full);
+        }while(await findExistingShort(hashUrl));
+
         const urlSchema = {
-            short: generateCodeFromUrl(full),
+            short: hashUrl,
             long: full,
         }
 
