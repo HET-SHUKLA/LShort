@@ -36,7 +36,7 @@ async function handleNewUrl(req, res, next){
             require_host: true, 
             require_tld: true
         })){
-            return res.status(400).json({msg: 'Provide a valid URL'});
+            return res.status(400).json({msg: 'Provide a valid URL with https:// or http:// prefix'});
         }
 
         const ans = await findExistingUrl(full);
