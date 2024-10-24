@@ -31,7 +31,11 @@ async function handleNewUrl(req, res, next){
 
         const full = req.body.fullUrl;
 
-        if(!full || !validator.isURL(full)){
+        if(!full || !validator.isURL(full, {
+            require_protocol: true, 
+            require_host: true, 
+            require_tld: true
+        })){
             return res.status(400).json({msg: 'Provide a valid URL'});
         }
 
