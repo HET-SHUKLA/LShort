@@ -29,4 +29,4 @@ connectDB(mongo_url).then( () => {
 });
 
 //Routes
-app.use('api/v1/shortUrls', shortUrlRouter);
+app.use('/api/v1/shortUrls', shortUrlRouter);
