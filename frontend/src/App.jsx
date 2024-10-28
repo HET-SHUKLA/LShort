@@ -1,9 +1,23 @@
+import Layout from './components/layout/Layout';
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
+import {Home} from './pages';
+
+
+const routes = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />}>
+      <Route path='' element={<Home />} />
+    </Route>
+  )
+);
+
+
 function App() {
 
   return (
-    <>
-      <h1 className="text-5xl">Welcome to URl shortner</h1>
-    </>
+    <RouterProvider router={routes}>
+      <Layout /> 
+    </RouterProvider>
   )
 }
 
