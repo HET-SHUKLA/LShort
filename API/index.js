@@ -27,6 +27,6 @@ connectDB(mongo_url).then( () => {
 }).catch((e) => {
     console.log('Failed to connect to Mongo DB' + e);
 });
-
+//For dev
 //Routes
 app.use('/api/v1/shortUrls', shortUrlRouter);
