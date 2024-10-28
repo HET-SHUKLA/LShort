@@ -7,14 +7,12 @@ const Home = () => {
     const [short, setShort] = useState(null);
 
     const shortUrl = (e) => {
-        
-        //API request with axios
         const params = new URLSearchParams();
         params.append('fullUrl', url);
 
         axios.post('https://lshort.up.railway.app/api/v1/shortUrls', params)
         .then((res) => {
-            setShort(`localhost:3000/${res.data.data}`);
+            setShort(`localhost:5173/${res.data.data}`);
         })
         .catch((err) => {
             setShort(err.response.data.msg);
@@ -37,7 +35,7 @@ const Home = () => {
             </div>
 
             <div className={``}>
-                <a href="#" className='text-white text-5xl'>{short}</a>
+                <a href={short} className='text-white text-5xl'>{short}</a>
             </div>
         </div>
     );
