@@ -3,8 +3,10 @@ import { mongo_url, port } from './config.js';
 import shortUrlRouter from './routes/shortUrl.js';
 import connectDB from './connection.js';
 import { errorHandler } from './middlewares/errorHandling.js';
+import {cors} from 'cors';
 
 const app = express();
+app.use(cors()); 
 
 //Middlewares
 app.use(express.urlencoded({extended: false}));
