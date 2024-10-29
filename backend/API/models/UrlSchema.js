@@ -5,7 +5,9 @@ import { url_collection } from "../config.js";
 const UrlSchema = new mongoose.Schema({
     short: {type: String, required: true, unique: true},
     long: {type: String, required: true},
-    createdAt: {type: Date, default: Date.now}
+    createdAt: {type: Date, default: Date.now},
+    lastAccessed: {type: Date, default: Date.now},
+    count: {type: Number, default: 0}
 });
 
 //Create Model

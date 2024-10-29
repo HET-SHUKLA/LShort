@@ -8,10 +8,20 @@ async function findExistingShort(short){
     return await url.findOne(query);
 }
 
+async function updateCountByOne(code){
+    await url.updateOne(
+        {
+            short: code
+        },
+        {
+            $inc: {$count: 1}
+        }
+    );
+}
 
 function generateCodeFromUrl(shortU){
     const salt = shortU+Date.now();
-    const hashids = new Hashids(salt, 5);
+    const hashids = new Hashids(salt, 3);
 
     const ran1 = Math.floor(Math.random() * 10000);
     const ran2 = Math.floor(Math.random() * 10000);
@@ -20,11 +30,11 @@ function generateCodeFromUrl(shortU){
     return hash;
 }
 
-async function findExistingUrl(full){
-    const query = {'long': full};
+// async function findExistingUrl(full){
+//     const query = {'long': full};
 
-    return await url.findOne(query);
-}
+//     return await url.findOne(query);
+// }
 
 async function handleNewUrl(req, res, next){
     try{
@@ -39,11 +49,11 @@ async function handleNewUrl(req, res, next){
             return res.status(400).json({msg: 'Provide a valid URL with https:// or http:// prefix'});
         }
 
-        const ans = await findExistingUrl(full);
+       // const ans = await findExistingUrl(full);
 
-        if(ans){
-            return res.status(201).json({msg: 'success', data: ans.short});
-        }
+        // if(ans){
+        //     return res.status(201).json({msg: 'success', data: ans.short});
+        // }
 
         //Checking if short is exist or not.
         let hashUrl;
@@ -76,9 +86,19 @@ async function handleGetUrl(req, res, next){
             projection: {_id: 0, long: 1}
         }
 
+        const countOption = {
+            projection: {_id: 0, count: 1}
+        }
+
         const longUrl = await url.findOne(query, null, options);
 
         if(longUrl){
+            const totalCount = await url.findOne(query, null, countOption);
+
+            totalCount = totalCount + 1; 
+            
+            await updateCountByOne(code);
+            
             return res.status(200).json({msg: 'success', data: longUrl.long});
         }
 

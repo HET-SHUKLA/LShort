@@ -12,9 +12,6 @@ app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(errorHandler);
 
-//TODO: Another middleware to log all the data
-
-
 //Connecting to the DB
 connectDB(mongo_url).then( () => {
     console.log('Mongo DB Connected');
@@ -27,6 +24,6 @@ connectDB(mongo_url).then( () => {
 }).catch((e) => {
     console.log('Failed to connect to Mongo DB' + e);
 });
-//For dev
+
 //Routes
 app.use('/api/v1/shortUrls', shortUrlRouter);
