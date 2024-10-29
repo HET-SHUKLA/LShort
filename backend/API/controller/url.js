@@ -95,8 +95,30 @@ async function handleGetUrl(req, res, next){
             return res.status(200).json({msg: 'success', data: longUrl.long});
         }
 
-        return res.status(404).json({ msg: 'URL not found' });
+        return res.status(404).json({ msg: 'Code not found' });
 
+    }catch(e){
+        next(e);
+    }
+}
+
+async function handleGetClick(req, res, next){
+    try{
+        const code = req.params.code;
+
+        const query = {'short': code};
+
+        const options = {
+            projection: {_id: 0, count: 1}
+        }
+
+        const count = await url.findOne(query, null, options);
+        
+        if(count){            
+            return res.status(200).json({msg: 'success', data: count.count});
+        }
+
+        return res.status(404).json({ msg: 'Code not found' });
     }catch(e){
         next(e);
     }
@@ -105,5 +127,6 @@ async function handleGetUrl(req, res, next){
 
 export {
     handleNewUrl,
-    handleGetUrl
+    handleGetUrl,
+    handleGetClick
 }
