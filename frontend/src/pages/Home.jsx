@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
 
@@ -10,7 +11,7 @@ const Home = () => {
         const params = new URLSearchParams();
         params.append('fullUrl', url);
 
-        axios.post('https://lshort.up.railway.app/api/v1/shortUrls', params)
+        axios.post('/api/v1/shortUrls', params)
         .then((res) => {
             setShort(`localhost:5173/${res.data.data}`);
         })
@@ -36,6 +37,14 @@ const Home = () => {
 
             <div className={``}>
                 <a href={short} className='text-white text-5xl'>{short}</a>
+            </div>
+
+            <div>
+                <Link to={'/click'}>
+                    <button className='bg-gray-800 text-white p-3 rounded'>
+                        Find Clicks
+                    </button>
+                </Link>
             </div>
         </div>
     );

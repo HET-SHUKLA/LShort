@@ -8,7 +8,7 @@ const Redirect = () => {
     useEffect(() => {
         
         //API request
-        axios.get(`https://lshort.up.railway.app/api/v1/shortUrls/${code}`)
+        axios.get(`/api/v1/shortUrls/${code}`)
         .then((res) => {
             window.location.href = res.data.data;
         })
