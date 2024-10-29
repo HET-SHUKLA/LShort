@@ -10,5 +10,8 @@ const UrlSchema = new mongoose.Schema({
     count: {type: Number, default: 0}
 });
 
+//index to delete after 30 days if no clicks were made
+UrlSchema.index({ lastAccessed: 1 }, { expireAfterSeconds: 120 }); // 30 days = 2592000 seconds
+
 //Create Model
 export const url = mongoose.model(url_collection, UrlSchema);

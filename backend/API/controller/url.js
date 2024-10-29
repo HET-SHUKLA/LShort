@@ -14,7 +14,8 @@ async function updateCountByOne(code){
             short: code
         },
         {
-            $inc: {$count: 1}
+            $inc: {$count: 1},
+            $set: {lastAccessed: Date.now()}
         }
     );
 }
