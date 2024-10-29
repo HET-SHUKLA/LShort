@@ -14,7 +14,7 @@ async function updateCountByOne(code){
             short: code
         },
         {
-            $inc: {$count: 1},
+            $inc: {count: 1},
             $set: {lastAccessed: Date.now()}
         }
     );
@@ -22,10 +22,10 @@ async function updateCountByOne(code){
 
 function generateCodeFromUrl(shortU){
     const salt = shortU+Date.now();
-    const hashids = new Hashids(salt, 3);
+    const hashids = new Hashids(salt, 4);
 
-    const ran1 = Math.floor(Math.random() * 10000);
-    const ran2 = Math.floor(Math.random() * 10000);
+    const ran1 = Math.floor(Math.random() * 1000);
+    const ran2 = Math.floor(Math.random() * 1000);
 
     const hash = hashids.encode(ran1,ran2);
     return hash;
@@ -87,17 +87,9 @@ async function handleGetUrl(req, res, next){
             projection: {_id: 0, long: 1}
         }
 
-        const countOption = {
-            projection: {_id: 0, count: 1}
-        }
-
         const longUrl = await url.findOne(query, null, options);
 
-        if(longUrl){
-            const totalCount = await url.findOne(query, null, countOption);
-
-            totalCount = totalCount + 1; 
-            
+        if(longUrl){            
             await updateCountByOne(code);
             
             return res.status(200).json({msg: 'success', data: longUrl.long});
