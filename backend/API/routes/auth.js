@@ -2,7 +2,7 @@ import express from 'express';
 import {
     handleEmailSignup,
     handleEmailSignin
-} from '../controller/authController';
+} from '../controller/authController.js';
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
-import { salt_round } from '../config';
-import { User } from '../models/UserSchema';
+import { salt_round } from '../config.js';
+import { User } from '../models/UserSchema.js';
 
 const updateLastAccessedForUser = (e) => {
     User.updateOne(
@@ -26,11 +26,15 @@ const handleEmailSignup = async (req, res, next) => {
                 email: email,
                 password: hash
             }
-    
-            const docs = new User(schema);
-            const result = await docs.save();
-
-            return res.status(201).json({msg: 'success', data: result});
+            
+            try{
+                const docs = new User(schema);
+                const result = await docs.save();
+                return res.status(201).json({msg: 'success', data: result});
+            }catch(e){
+                next(e);
+                return;
+            }
         });
         
     }catch(e){
@@ -61,6 +65,7 @@ const handleEmailSignin = async (req, res, next) => {
                 updateLastAccessedForUser(email);
 
                 res.status(200).json({msg: 'success'});
+                return;
             }
             
             res.status(401).json({msg: 'Password is wrong'})
