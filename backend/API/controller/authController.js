@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { salt_round } from '../config.js';
 import { User } from '../models/UserSchema.js';
+import { generateAccessToken } from '../utils/generateAccessToken.js';
 
 const updateLastAccessedForUser = async (e) => {
     await User.updateOne(
@@ -44,7 +45,8 @@ const handleEmailSignup = async (req, res, next) => {
 
 const handleEmailSignin = async (req, res, next) => {
     const {email, password} = req.body;
-    
+    const {remember} = req.body || 'false';
+
     const query = {'email': email};
 
     const options = {
@@ -63,7 +65,13 @@ const handleEmailSignin = async (req, res, next) => {
 
                 await updateLastAccessedForUser(email);
 
-                res.status(200).json({msg: 'success'});
+                const token = await generateAccessToken(email, remember);
+
+                if(token){
+                    res.status(200).json({msg: 'success', data: token});
+                }else{
+                    res.status(500).json({msg: 'Internal Server Error'});
+                }
                 return;
             }
             
