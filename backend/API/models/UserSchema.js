@@ -14,8 +14,6 @@ const UserSchema = new mongoose.Schema({
     timestamps: { createdAt: 'createdAt' },
 });
 
-UserSchema.index({ account: 1 });
-
 UserSchema.pre('save', function (next) {
     if (this.account === 'email' && !this.password) {
       throw new Error("Password is required for email accounts");
