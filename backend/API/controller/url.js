@@ -63,6 +63,8 @@ async function handleNewUrl(req, res, next){
         const urlSchema = {
             short: hashUrl,
             long: full,
+            guestUser: req.useremail ? true : false,
+            userEmail: req.userEmail
         }
 
         const docs = new Url(urlSchema);

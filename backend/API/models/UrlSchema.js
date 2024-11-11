@@ -1,23 +1,21 @@
 import mongoose from "mongoose"
 import { url_collection } from "../config.js";
 
-const USER_ENUM = ['user', 'guest'];
-
 //Create Schema
 const UrlSchema = new mongoose.Schema({
     short: {type: String, required: true, unique: true},
     long: {type: String, required: true},
     count: {type: Number, default: 0},
-    userType: {type: String, enum: USER_ENUM, required: true, default: 'guest'},
-    userId: {type: String}
+    guestUser: {type: Boolean, required: true, default: true},
+    userEmail: {type: String}
 }, {
     collection: url_collection,
     timestamps: {createdAt: 'createdAt', updatedAt: 'lasteAccessed'}
 });
 
 UrlSchema.pre('save', function (next) {
-    if (this.userType === 'user' && !this.userId) {
-      throw new Error("UserId is required");
+    if (this.guestUser === false && !this.userEmail) {
+      throw new Error("User email is required");
     }
     next();
 });

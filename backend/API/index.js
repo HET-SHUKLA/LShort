@@ -5,7 +5,6 @@ import auth from './routes/auth.js';
 import connectDB from './connection.js';
 import { errorHandler } from './middlewares/errorHandling.js';
 import cors from 'cors';
-import verifyToken from './middlewares/verifyUser.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();
