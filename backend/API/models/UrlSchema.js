@@ -9,7 +9,7 @@ const UrlSchema = new mongoose.Schema({
     long: {type: String, required: true},
     count: {type: Number, default: 0},
     userType: {type: String, enum: USER_ENUM, required: true, default: 'guest'},
-    userId: {type: ObjectId}
+    userId: {type: String}
 }, {
     collection: url_collection,
     timestamps: {createdAt: 'createdAt', updatedAt: 'lasteAccessed'}
