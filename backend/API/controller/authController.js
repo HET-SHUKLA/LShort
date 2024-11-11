@@ -27,6 +27,31 @@ const handleEmailSignup = async (req, res, next) => {
     }
 }
 
+const handleEmailSignin = async (req, res, next) => {
+    const {email, password} = req.body;
+    
+    const query = {'email': email};
+
+    const options = {
+        projection: {_id: 0, password: 1}
+    }
+
+    const hash = await User.findOne(query, null, options);    
+    if(hash){
+        bcrypt.compare(password, hash.password, function(err, result) {
+            if(err){
+                next(err);
+                return;
+            }
+
+            result ? res.status(200).json({msg: 'success'}) : res.status(401).json({msg: 'Password is wrong'})
+        });
+    }else{
+        res.status(404).json({msg: 'User does not exists'});
+    }
+}
+
 export {
     handleEmailSignup,
+    handleEmailSignin,
 }
