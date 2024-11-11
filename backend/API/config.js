@@ -6,9 +6,13 @@ configDotenv();
 const url_collection = process.env.URL_COLLECTION_NAME;
 const mongo_url = process.env.MONGO_URL;
 const port = process.env.PORT;
+const user_collection = process.env.USER_COLLECTION_NAME;
+const salt_round = process.env.SALT_ROUND;
 
 export {
     url_collection,
     mongo_url,
-    port
+    port,
+    user_collection,
+    salt_round
 }

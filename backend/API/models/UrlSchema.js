@@ -9,6 +9,6 @@ const UrlSchema = new mongoose.Schema({
     lastAccessed: {type: Date, default: Date.now},
     count: {type: Number, default: 0}
 });
-
+//TODO: Chnage structure
 //Create Model
 export const url = mongoose.model(url_collection, UrlSchema);

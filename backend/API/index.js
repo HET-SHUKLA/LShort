@@ -1,6 +1,7 @@
 import express from 'express';
 import { mongo_url, port } from './config.js';
 import shortUrls from './routes/shortUrl.js';
+import auth from './routes/auth.js';
 import connectDB from './connection.js';
 import { errorHandler } from './middlewares/errorHandling.js';
 import cors from 'cors';
@@ -27,3 +28,4 @@ connectDB(mongo_url).then( () => {
 
 //Routes
 app.use('/api/v1/shortUrls', shortUrls);
+app.use('/api/v1/auth', auth);
