@@ -1,10 +1,12 @@
 import bcrypt from 'bcrypt';
+import { salt_round } from '../config';
+import { User } from '../models/UserSchema';
 
 const handleEmailSignup = async (req, res, next) => {
     try{
-        let {email, pass} = req.body;
+        let {email, password} = req.body;
 
-        bcrypt.hash(pass, parseInt(SALT_ROUND), async (err, hash) => {
+        bcrypt.hash(password, parseInt(salt_round), async (err, hash) => {
             if(err){
                 next(err);
                 return;
@@ -14,7 +16,7 @@ const handleEmailSignup = async (req, res, next) => {
                 password: hash
             }
     
-            const docs = new Email(schema);
+            const docs = new User(schema);
             const result = await docs.save();
 
             return res.status(201).json({msg: 'success', data: result});
@@ -23,4 +25,8 @@ const handleEmailSignup = async (req, res, next) => {
     }catch(e){
         next(e);
     }
+}
+
+export {
+    handleEmailSignup,
 }
