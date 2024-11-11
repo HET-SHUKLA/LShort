@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt';
 import { salt_round } from '../config.js';
 import { User } from '../models/UserSchema.js';
 
-const updateLastAccessedForUser = (e) => {
-    User.updateOne(
+const updateLastAccessedForUser = async (e) => {
+    await User.updateOne(
         {
             email: e
         },
@@ -53,7 +53,7 @@ const handleEmailSignin = async (req, res, next) => {
 
     const hash = await User.findOne(query, null, options);    
     if(hash){
-        bcrypt.compare(password, hash.password, function(err, result) {
+        bcrypt.compare(password, hash.password, async function(err, result) {
             if(err){
                 next(err);
                 return;
@@ -61,8 +61,7 @@ const handleEmailSignin = async (req, res, next) => {
 
             if(result){
 
-                //Not async await, because it can run in the background
-                updateLastAccessedForUser(email);
+                await updateLastAccessedForUser(email);
 
                 res.status(200).json({msg: 'success'});
                 return;
