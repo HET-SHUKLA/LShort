@@ -68,6 +68,12 @@ const handleEmailSignin = async (req, res, next) => {
                 const token = await generateAccessToken(email, remember);
 
                 if(token){
+                    res.cookie('token', token, {
+                        httpOnly: true, 
+                        secure: true,
+                        maxAge: 3600000
+                    });
+
                     res.status(200).json({msg: 'success', data: token});
                 }else{
                     res.status(500).json({msg: 'Internal Server Error'});
