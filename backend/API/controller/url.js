@@ -1,21 +1,20 @@
-import {url} from '../models/UrlSchema.js';
+import {Url} from '../models/UrlSchema.js';
 import Hashids from 'hashids';
 import validator from 'validator';
 
 async function findExistingShort(short){
     const query = {'short': short};
 
-    return await url.findOne(query);
+    return await Url.findOne(query);
 }
 
 async function updateCountByOne(code){
-    await url.updateOne(
+    await Url.updateOne(
         {
             short: code
         },
         {
             $inc: {count: 1},
-            $set: {lastAccessed: Date.now()}
         }
     );
 }
@@ -34,7 +33,7 @@ function generateCodeFromUrl(shortU){
 // async function findExistingUrl(full){
 //     const query = {'long': full};
 
-//     return await url.findOne(query);
+//     return await Url.findOne(query);
 // }
 
 async function handleNewUrl(req, res, next){
@@ -43,11 +42,10 @@ async function handleNewUrl(req, res, next){
         const full = req.body.fullUrl;
 
         if(!full || !validator.isURL(full, {
-            require_protocol: true, 
             require_host: true, 
             require_tld: true
         })){
-            return res.status(400).json({msg: 'Provide a valid URL with https:// or http:// prefix'});
+            return res.status(400).json({msg: 'Provide a valid URL'});
         }
 
        // const ans = await findExistingUrl(full);
@@ -67,7 +65,7 @@ async function handleNewUrl(req, res, next){
             long: full,
         }
 
-        const docs = new url(urlSchema);
+        const docs = new Url(urlSchema);
         const result = await docs.save();
 
         return res.status(201).json({msg: 'success', data: result.short});
@@ -87,7 +85,7 @@ async function handleGetUrl(req, res, next){
             projection: {_id: 0, long: 1}
         }
 
-        const longUrl = await url.findOne(query, null, options);
+        const longUrl = await Url.findOne(query, null, options);
 
         if(longUrl){            
             await updateCountByOne(code);
@@ -112,7 +110,7 @@ async function handleGetClick(req, res, next){
             projection: {_id: 0, count: 1}
         }
 
-        const count = await url.findOne(query, null, options);
+        const count = await Url.findOne(query, null, options);
         
         if(count){            
             return res.status(200).json({msg: 'success', data: count.count});
