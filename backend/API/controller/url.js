@@ -60,17 +60,28 @@ async function handleNewUrl(req, res, next){
             hashUrl = generateCodeFromUrl(full);
         }while(await findExistingShort(hashUrl));
 
+        if(req.useremail){
+            const urlSchema = {
+                short: hashUrl,
+                long: full,
+                userEmail: req.useremail
+            }
+    
+            const docs = new Url(urlSchema);
+            const result = await docs.save();
+    
+            return res.status(201).json({msg: 'success', data: result.short});    
+        }
         const urlSchema = {
             short: hashUrl,
             long: full,
-            guestUser: req.useremail ? true : false,
-            userEmail: req.userEmail
         }
 
         const docs = new Url(urlSchema);
         const result = await docs.save();
 
         return res.status(201).json({msg: 'success', data: result.short});
+        
         
     }catch(e){
         next(e);

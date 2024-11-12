@@ -10,7 +10,13 @@ const Redirect = () => {
         //API request
         axios.get(`/api/v1/shortUrls/${code}`)
         .then((res) => {
-            window.location.href = res.data.data;
+            let targetUrl = res.data.data;
+
+            if (!targetUrl.startsWith("http://") && !targetUrl.startsWith("https://")) {
+                targetUrl = `http://${targetUrl}`;
+            }
+
+            window.location.href = targetUrl;
         })
         .catch((err) => {
             console.log(err.response.data.msg);

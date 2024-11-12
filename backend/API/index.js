@@ -35,6 +35,6 @@ connectDB(mongo_url).then( () => {
 });
 
 //Routes
-app.use('/api/v1/shortUrls', shortUrls);
+app.use('/api/v1/shortUrls', verifyToken, shortUrls);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/user', verifyToken, user);
