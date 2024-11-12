@@ -75,7 +75,7 @@ const Home = () => {
             <div className='mt-5 text-center'>
                 <div>
                     <Link to={'/click'}>
-                        <button className='bg-gray-950 text-white p-3 rounded min-w-32 border-2 border-green-600'>
+                        <button className='bg-gray-900 text-white p-3 rounded min-w-32 border-2 border-green-600'>
                             Find Clicks
                         </button>
                     </Link>

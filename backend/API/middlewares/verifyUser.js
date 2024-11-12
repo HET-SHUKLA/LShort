@@ -3,7 +3,7 @@ import { jwt_secret } from '../config.js';
 
 const verifyToken = (req, res, next) => {
     const token = req.cookies.token;
-
+    
     if (!token) {
         next();
         return;
@@ -16,6 +16,8 @@ const verifyToken = (req, res, next) => {
         }
 
         req.useremail = decoded.email;
+        console.log(req.useremail);
+        
         next();
     });
 };
