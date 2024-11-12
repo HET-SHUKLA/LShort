@@ -1,6 +1,7 @@
 import {Url} from '../models/UrlSchema.js';
 import Hashids from 'hashids';
 import validator from 'validator';
+import uap, {UAParser} from 'ua-parser-js';
 
 async function findExistingShort(short){
     const query = {'short': short};
@@ -8,8 +9,14 @@ async function findExistingShort(short){
     return await Url.findOne(query);
 }
 
-async function getUserDetail(code){
+async function getUserDetail(code, ua){
+
     
+//     browser: { name: 'Chrome', version: '130.0.0.0', major: '130' },
+//   engine: { name: 'Blink', version: '130.0.0.0' },
+//   os: { name: 'Windows', version: '10' },
+//   device: { vendor: undefined, model: undefined, type: undefined },
+//   cpu: { architecture: 'amd64' }
 }
 
 async function updateCountByOne(code){
@@ -106,7 +113,9 @@ async function handleGetUrl(req, res, next){
 
         if(longUrl){            
             await updateCountByOne(code);
-            await getUserDetail(code);
+
+            const ua = uap(req.headers['user-agent']);
+            await getUserDetail(code,ua);
             return res.status(200).json({msg: 'success', data: longUrl.long});
         }
 
