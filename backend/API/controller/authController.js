@@ -24,7 +24,7 @@ const checkIfUserExists = async (e, type) => {
     const query = {'email': e, 'account': type};
 
     const result = await User.findOne(query);
-
+    
     if(result){
         return true;
     }
@@ -110,7 +110,7 @@ const handleEmailSignin = async (req, res, next) => {
     }
 }
 
-const handleGoogleAuth = async (req, res, next) => {
+const handleGoogleAuth = async (req, res, next) => {    
     const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${redirect_url}&response_type=code&scope=profile email`;
     res.redirect(url);
 }
@@ -133,27 +133,30 @@ const handleGoogleRedirect = async (req, res, next) => {
         });
         const profile = profileResponse.data || false;
         
-        if(profile && checkIfUserExists(profile.email, 'google')){
-            await updateLastAccessedForUser(email);
-            const remember = 'true';
-            
-            const token = await generateAccessToken(email, remember);
-
-            if(token){
-                res.cookie('token', token, {
-                    httpOnly: true, 
-                    secure: true,
-                    maxAge: remember ? 604800000 : 3600000,
-                });
-
-                res.status(200).json({msg: 'success', data: token});
-            }else{
-                res.status(500).json({msg: 'Internal Server Error'});
-            }
-            return;
-        }
-
         if(profile){
+            const r = await checkIfUserExists(profile.email, 'google');
+            if(r){
+                
+                await updateLastAccessedForUser(profile.email);
+                const remember = 'true';
+                
+                const token = await generateAccessToken(profile.email, remember);
+
+                if(token){
+                    res.cookie('token', token, {
+                        httpOnly: true, 
+                        secure: true,
+                        maxAge: remember ? 604800000 : 3600000,
+                    });
+
+                    res.redirect('http://localhost:5173/dashboard');
+                }else{
+                    res.status(500).json({msg: 'Internal Server Error'});
+                }
+                return;
+            }
+
+
             const userSchema = {
                 email: profile.email,
                 account: 'google',
@@ -164,7 +167,7 @@ const handleGoogleRedirect = async (req, res, next) => {
 
             const remember = 'true';
             
-            const token = await generateAccessToken(email, remember);
+            const token = await generateAccessToken(profile.email, remember);
 
             if(token){
                 res.cookie('token', token, {
@@ -173,7 +176,7 @@ const handleGoogleRedirect = async (req, res, next) => {
                     maxAge: remember ? 604800000 : 3600000,
                 });
 
-                res.status(201).json({msg: 'success', data: token});
+                res.redirect('http://localhost:5173/dashboard');
             }else{
                 res.status(500).json({msg: 'Internal Server Error'});
             }

@@ -1,13 +1,28 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
     const [url, setUrl] = useState('');
     const [short, setShort] = useState(null);
 
-    const shortUrl = (e) => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        console.log(`aaa : `);
+
+        axios.get(`/api/v1/user`)
+        .then((res) => {
+            if(res.data.data){
+                console.log(`aaa : `+res.data.data);
+                
+                navigate('/dashboard');
+            }
+        })
+    });
+
+    const shortUrl = () => {
         const params = new URLSearchParams();
         params.append('fullUrl', url);
 
@@ -18,6 +33,19 @@ const Home = () => {
         .catch((err) => {
             setShort(err.response.data.msg);
         })
+    }
+
+    const handleSigninClick = () => {
+        window.location.href = '/api/v1/auth/google';
+        // axios.get('/api/v1/auth/google')
+        // .then((res) => {
+        //     if(res.data.data){
+        //         redirect('/dashboard');
+        //     }
+        // }).catch((e) => {
+        //     console.log(`Something went wrong : ${e.response.data.msg}`);
+            
+        // })
     }
 
     return (
@@ -45,6 +73,10 @@ const Home = () => {
                         Find Clicks
                     </button>
                 </Link>
+
+                <button className='bg-gray-800 text-white p-3 rounded' onClick={handleSigninClick}>
+                    Continue with google
+                </button>
             </div>
         </div>
     );
