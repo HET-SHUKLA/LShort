@@ -3,7 +3,8 @@ import {
     handleEmailSignup,
     handleEmailSignin,
     handleGoogleAuth,
-    handleGoogleRedirect
+    handleGoogleRedirect,
+    handleLogout
 } from '../controller/authController.js';
 
 const router = express.Router();
@@ -14,5 +15,7 @@ router.route('/signin/email').post(handleEmailSignin);
 router.route('/google').get(handleGoogleAuth);
 
 router.route('/').get(handleGoogleRedirect);
+
+router.route('/logout').get(handleLogout);
 
 export default router;

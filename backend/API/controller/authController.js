@@ -189,9 +189,19 @@ const handleGoogleRedirect = async (req, res, next) => {
     }
 }
 
+const handleLogout = (req, res, next) => {
+    try{
+        res.clearCookie('token');
+        res.status(200).json({msg: 'success'});
+    }catch(e){
+        next(e);
+    }
+}
+
 export {
     handleEmailSignup,
     handleEmailSignin,
     handleGoogleAuth,
-    handleGoogleRedirect
+    handleGoogleRedirect,
+    handleLogout
 }

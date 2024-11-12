@@ -37,6 +37,16 @@ const Dashboard = () => {
         })
     }
 
+    const logout = () => {
+        axios.get('/api/v1/auth/logout')
+        .then((res) => {
+            navigate('/');
+        })
+        .catch((e) => {
+            navigate('/');
+        })
+    }
+
     useEffect(() => {
         axios.get(`/api/v1/user`)
         .then((res) => {
@@ -56,6 +66,10 @@ const Dashboard = () => {
         <>
             <div className='w-full text-center my-5'>
                 <h1 className='text-white text-3xl'>User : {email}</h1>
+
+                <button className='bg-gray-900 text-white p-3 rounded min-w-32 border-2 border-green-600' onClick={logout}>
+                    Logout
+                </button>
             </div>
 
             <div className='mt-10 w-full text-center'>
