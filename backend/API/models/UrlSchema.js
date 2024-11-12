@@ -6,7 +6,8 @@ const UrlSchema = new mongoose.Schema({
     short: {type: String, required: true, unique: true},
     long: {type: String, required: true},
     count: {type: Number, default: 0},
-    userEmail: {type: String}
+    userEmail: {type: String},
+    analytics: {type: Array, default: []}
 }, {
     collection: url_collection,
     timestamps: {createdAt: 'createdAt', updatedAt: 'lasteAccessed'}

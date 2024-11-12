@@ -12,6 +12,7 @@ const jwt_secret = process.env.JWT_SECRET;
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 const redirect_url = process.env.REDIRECT_URI;
+const ipToken = process.env.IP_TOKEN;
 
 export {
     url_collection,
@@ -22,5 +23,6 @@ export {
     jwt_secret,
     client_id,
     client_secret,
-    redirect_url
+    redirect_url,
+    ipToken
 }

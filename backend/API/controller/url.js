@@ -1,7 +1,9 @@
 import {Url} from '../models/UrlSchema.js';
 import Hashids from 'hashids';
 import validator from 'validator';
-import uap, {UAParser} from 'ua-parser-js';
+import uap from 'ua-parser-js';
+import axios from 'axios';
+import { ipToken } from '../config.js';
 
 async function findExistingShort(short){
     const query = {'short': short};
@@ -9,10 +11,62 @@ async function findExistingShort(short){
     return await Url.findOne(query);
 }
 
-async function getUserDetail(code, ua){
+function getIPv4(ip) {
+    if (ip.startsWith('::ffff:')) {
+      return ip.replace('::ffff:', ''); 
+    }
+    return ip;
+}
 
+async function getIpData(ip4){
+    const ipReq = `https://ipinfo.io/${ip4}`;
+    const instance = axios.create({
+        baseURL: ipReq,
+        headers: {'Authorization': `Bearer ${ipToken}`}
+      });
+      
+    const res = await instance.get('');
+    return res.data;
+}
+
+async function getUserDetail(code, ua, ip){
+
+    //Ip Data
+    const ip4 = getIPv4(ip);
+    const data = await getIpData(ip4);
     
-//     browser: { name: 'Chrome', version: '130.0.0.0', major: '130' },
+    const ipData = {
+        'city': data ? data.city : 'not fetched',
+        'region' : data ? data.region : 'not fetched',
+        'country' : data ? data.country : 'not fetched',
+        'loc' : data ? data.loc : 'not fetched',
+    }
+
+    //Current Time
+    const currTime = Date.now();
+
+    //ua
+    const userAgent = {
+        'browser': ua.browser.name,
+        'os': ua.os.name + ' ' + ua.os.version,
+    }
+
+    const obj = {ipData, currTime, userAgent};
+
+    try{
+        await Url.updateOne(
+            {
+                short: code
+            },
+            {
+                $push: {analytics: obj}
+            }
+        );
+    }catch(e){
+        next(e);
+    }
+
+//   browser: { name: 'Chrome', version: '130.0.0.0', major: '130' },
 //   engine: { name: 'Blink', version: '130.0.0.0' },
 //   os: { name: 'Windows', version: '10' },
 //   device: { vendor: undefined, model: undefined, type: undefined },
@@ -115,7 +169,10 @@ async function handleGetUrl(req, res, next){
             await updateCountByOne(code);
 
             const ua = uap(req.headers['user-agent']);
-            await getUserDetail(code,ua);
+            const ip = req.ip;
+            
+            await getUserDetail(code, ua, ip);
+            
             return res.status(200).json({msg: 'success', data: longUrl.long});
         }
 
