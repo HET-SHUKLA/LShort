@@ -1,6 +1,6 @@
 import Layout from './components/layout/Layout';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
-import {Home, Redirect, ClickCount, Dashboard} from './pages';
+import {Home, Redirect, ClickCount, Dashboard, Analytics} from './pages';
 
 
 const routes = createBrowserRouter(
@@ -10,6 +10,7 @@ const routes = createBrowserRouter(
       <Route path=':code' element={<Redirect />} />
       <Route path='click' element={<ClickCount />} />
       <Route path='dashboard' element={<Dashboard /> } />
+      <Route path='analytics/:short' element={<Analytics /> } />
     </Route>
   )
 );
