@@ -9,6 +9,7 @@
     "hashids": "^2.3.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.2",
+    "ua-parser-js": "^1.0.39",
     "validator": "^13.12.0"
   },
   "name": "url-shortner",

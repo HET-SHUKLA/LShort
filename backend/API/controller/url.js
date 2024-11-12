@@ -8,6 +8,10 @@ async function findExistingShort(short){
     return await Url.findOne(query);
 }
 
+async function getUserDetail(code){
+    
+}
+
 async function updateCountByOne(code){
     await Url.updateOne(
         {
@@ -102,7 +106,7 @@ async function handleGetUrl(req, res, next){
 
         if(longUrl){            
             await updateCountByOne(code);
-            
+            await getUserDetail(code);
             return res.status(200).json({msg: 'success', data: longUrl.long});
         }
 
