@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
 
     const [email, setEmail] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`/api/v1/user`)
@@ -12,14 +13,14 @@ const Dashboard = () => {
             if(res.data.data){
                 setEmail(res.data.data);
             }else{
-                redirect('/');
+                navigate('/');
             }
         })
     });
 
     return (
         <>
-            <h1>{email}</h1>
+            <h1 className='text-white'>{email}</h1>
         </>
     );
 }

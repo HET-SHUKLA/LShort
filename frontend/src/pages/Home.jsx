@@ -49,34 +49,48 @@ const Home = () => {
     }
 
     return (
-        <div className='flex flex-col h-screen w-screen justify-center items-center'>
-            <div>
+        <div className='flex flex-col h-full w-full items-center'>
+            <div className='text-center w-10/12 mt-20'>
                 <h1 className='text-white text-5xl'>URL Shortener</h1>
+                <h2 className='text-green-400 text-3xl my-3'>Get rid of complicated URL Shorteners.</h2>
+                <p className='text-white my-5 text-2xl'>
+                    A super-simple URL shortener with an intuitive interface and detailed analytics create, share, and track your links effortlessly!
+                </p>
+                
             </div>
 
-            <div className='my-3 w-1/2  text-center'>
-                <input type="text" placeholder='Enter URL' className='p-3 w-10/12' value={url} 
+            <div className='mt-5 w-full  text-center'>
+                <input type="text" placeholder='Enter URL' className='p-3 w-8/12 rounded-s-md bg-gray-950 text-white' value={url} 
                 onChange={(e) => setUrl(e.target.value)} />
 
-                <button onClick={shortUrl} className='bg-green-600 p-3 text-white'>
+                <button onClick={shortUrl} className='bg-green-600 p-3 text-white rounded-e-md'>
                     Short
                 </button>
             </div>
 
-            <div className={``}>
-                <a href={short} className='text-white text-5xl'>{short}</a>
+            <div className={`mt-2 w-10/12 text-center`}>
+                <a href={short} className='text-white text-3xl'>{short}</a>
             </div>
 
-            <div>
-                <Link to={'/click'}>
-                    <button className='bg-gray-800 text-white p-3 rounded'>
-                        Find Clicks
-                    </button>
-                </Link>
+            <div className='mt-5 text-center'>
+                <div>
+                    <Link to={'/click'}>
+                        <button className='bg-gray-950 text-white p-3 rounded min-w-32 border-2 border-green-600'>
+                            Find Clicks
+                        </button>
+                    </Link>
+                </div>
 
-                <button className='bg-gray-800 text-white p-3 rounded' onClick={handleSigninClick}>
-                    Continue with google
-                </button>
+                <div className='mt-5 w-full flex flex-col items-center'>
+                    <div className='w-10/12 text-center'>
+                        <p className='text-white'>Want to see full analysis of your link? Sign up or Log in with the google.</p>
+                    </div>
+                    <div>
+                        <button className='bg-green-600 text-white p-3 rounded min-w-32 my-2' onClick={handleSigninClick}>
+                            Google
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     );
