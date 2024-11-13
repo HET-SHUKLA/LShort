@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Chart } from "react-google-charts";
+import { json2csv } from 'json-2-csv';
 
 const Analytics = () => {
 
@@ -210,25 +211,9 @@ const Analytics = () => {
     }
     
     function downloadAsCSV(data) {
-        const csvRows = [];
+        const csv = json2csv(data);
     
-        // Convert headers to CSV
-        const headers = ["Date", "Click"];
-        csvRows.push(headers.join(",")); // Join headers with comma
-    
-        // Convert each data row to CSV format
-        data.slice(1).forEach(row => {
-            const date = new Date(row[0]);
-            const formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-            const clicks = row[1];
-            csvRows.push(`${formattedDate},${clicks}`);
-        });
-    
-        // Join rows with newlines
-        const csvString = csvRows.join("\n");
-    
-        // Create a blob and trigger download
-        const blob = new Blob([csvString], { type: "text/csv" });
+        const blob = new Blob([csv], { type: "text/csv" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
