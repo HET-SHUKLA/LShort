@@ -153,7 +153,7 @@ async function handleNewUrl(req, res, next){
     }
 }
 
-async function handleGetUrl(req, res, next){
+async function handleRedirectUrl(req, res, next){
     try{
         const code = req.params.code;
 
@@ -205,9 +205,34 @@ async function handleGetClick(req, res, next){
     }
 }
 
+async function handleAnalyticUrl(req, res, next){
+    const {code} = req.params;
+
+    const query = {'short': code};
+
+    const options = {
+        projection: {
+            long: 1,
+            count: 1,
+            userEmail: 1,
+            analytics: 1,
+            createdAt: 1,
+            lastAccessed: 1
+        }
+    }
+
+    const data = await Url.findOne(query, null, options);
+
+    if(data){
+        return res.status(200).json({msg: 'success', data: data});
+    }
+    return res.status(404).json({msg: 'Something went wrong'});
+}
+
 
 export {
     handleNewUrl,
-    handleGetUrl,
-    handleGetClick
+    handleRedirectUrl,
+    handleGetClick,
+    handleAnalyticUrl
 }

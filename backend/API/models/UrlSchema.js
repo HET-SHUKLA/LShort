@@ -10,7 +10,7 @@ const UrlSchema = new mongoose.Schema({
     analytics: {type: Array, default: []}
 }, {
     collection: url_collection,
-    timestamps: {createdAt: 'createdAt', updatedAt: 'lasteAccessed'}
+    timestamps: {createdAt: 'createdAt', updatedAt: 'lastAccessed'}
 });
 
 UrlSchema.pre('save', function (next) {
