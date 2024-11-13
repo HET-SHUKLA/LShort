@@ -8,23 +8,48 @@ const Analytics = () => {
     const {short} = useParams();
     const [data, setData] = useState({});
     const [country, setCountry] = useState({});
-    const [region, setRegion] = useState(null); // State for the selected region
+    const [state, setState] = useState({}); 
+    const [region, setRegion] = useState(null); 
 
     const handleRegionSelect = ({ chartWrapper }) => {
         const chart = chartWrapper.getChart();
         const selection = chart.getSelection();
         if (selection.length === 0) return;
-
-        // Get the country/region ISO code from the selected row
-        const selectedCountry = country[selection[0].row + 1][0]; // Adjust based on your data structure
-        console.log("Selected:", selectedCountry);
         
-        // Update the region to zoom into the selected country
+        const selectedCountry = country[selection[0].row + 1][0]; // Adjust based on your data structure
+                
+        setState(getRegionData(data, selectedCountry));
         setRegion(selectedCountry);
     };
 
+    function getRegionData(d, s){
+        let data = [["Region", "Clicks"]];
+        let countryCount = {};
+
+        d.analytics.forEach(e => {
+            const lcountry = e.ipData.country;
+            const lstate = e.ipData.region;
+
+            if (lcountry === s) {
+                if (countryCount[lstate]) {
+                    countryCount[lstate]++;
+                } else {
+                    countryCount[lstate] = 1;
+                }
+            }
+        });
+
+        for (const country in countryCount) {
+            data.push([country, countryCount[country]]);
+        }
+        
+        console.log(data);
+        
+        return data;
+    }
+
     const handleZoomOut = () => {
-        setRegion(null); // Reset the region to null to zoom out to the world view
+        setRegion(null);
     };
 
     const chartOptions = {
@@ -58,16 +83,16 @@ const Analytics = () => {
 
     function getCountryData(d){
         let data = [["Country", "Clicks"]];
-        let countryCount = {}; 
+        let countryCount = {};
 
         d.analytics.forEach(e => {
-            if (e.ipData.country !== 'not fetched') {
-                const country = e.ipData.country;
+            const lcountry = e.ipData.country;
 
-                if (countryCount[country]) {
-                    countryCount[country]++;
+            if (lcountry !== 'not fetched') {
+                if (countryCount[lcountry]) {
+                    countryCount[lcountry]++;
                 } else {
-                    countryCount[country] = 1;
+                    countryCount[lcountry] = 1;
                 }
             }
         });
@@ -103,10 +128,12 @@ const Analytics = () => {
                     chartType="GeoChart"
                     width="100%"
                     height="100%"
-                    data={country}
+                    data={!region && country || state}
                     options={chartOptions}
                 />
             </div>
+
+
         </div>
     );
 }
