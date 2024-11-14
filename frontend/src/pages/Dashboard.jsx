@@ -9,6 +9,8 @@ const Dashboard = () => {
     const [data, setData] = useState([]);
     const [url, setUrl] = useState('');
     const [short, setShort] = useState(null);
+    const [search, setSearch] = useState('');
+    const [backup, setBackup] = useState([]);
 
     const navigate = useNavigate();
 
@@ -17,6 +19,7 @@ const Dashboard = () => {
             axios.get('/api/v1/user/urls')
             .then((res) => {
                 setData(res.data.data);
+                setBackup(res.data.data);
             }).catch((e) => {
                 navigate('/');
             });
@@ -46,6 +49,20 @@ const Dashboard = () => {
             navigate('/');
         })
     }
+
+    useEffect(() => {
+        if (!search) {
+            setData(backup);
+        } else {
+            setData(
+                backup.filter((e) => (
+                    (e.short).toString().includes(search) || 
+                    (e.long).toString().includes(search) || 
+                    (e.count).toString().includes(search)
+                ))
+            );
+        }
+    }, [search, backup]);
 
     useEffect(() => {
         axios.get(`/api/v1/user`)
@@ -87,6 +104,11 @@ const Dashboard = () => {
 
             <div className='w-full text-center mt-5'>
                 <h1 className='text-white text-xl'>Your URLs</h1>
+            </div>
+
+            <div className='mt-5 w-full text-center'>
+                <input type="text" placeholder='Search URL by Code, Short URL, Long URL or Clicks' className='p-3 w-8/12 rounded-s-md bg-gray-700 text-white' value={search} 
+                onChange={(e) => setSearch(e.target.value)} />
             </div>
 
             <div className='flex flex-col items-center'>

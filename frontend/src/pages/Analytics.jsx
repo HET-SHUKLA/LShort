@@ -291,7 +291,7 @@ const Analytics = () => {
             </div>
 
             <div className='w-11/12 bg-gray-900 flex flex-col justify-center items-center rounded-xl my-1 p-2'>
-                <p className='text-white text-xl text-center'>Other data like City and Longatude and Latitude of the user are available, you can download your data either in JSON or CSV formate.</p>
+                <p className='text-white text-xl text-center'>Other data like City and Longitude and Latitude of the user are available, you can download your data either in JSON or CSV formate.</p>
                 
                 <div>
                     <button onClick={() => downloadAsJSON(data.analytics)} className='mx-5'>Download JSON</button>
