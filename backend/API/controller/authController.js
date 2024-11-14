@@ -111,7 +111,7 @@ const handleEmailSignin = async (req, res, next) => {
 }
 
 const handleGoogleAuth = async (req, res, next) => {    
-    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${redirect_url}&response_type=code&scope=profile email`;
+    const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${redirect_url}&response_type=code&scope=profile email`;    
     res.redirect(url);
 }
 
