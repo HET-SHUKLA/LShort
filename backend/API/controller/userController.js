@@ -68,7 +68,8 @@ const handleResetUrl = async (req, res, next) => {
                     short: code
                 },
                 {
-                    $unset: {analytics: []}
+                    $unset: {analytics: []},
+                    $set: {count: 0}
                 }
             );
             return res.status(200).json({msg: 'success'});
