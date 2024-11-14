@@ -51,8 +51,38 @@ const handleDeleteUrl = async (req, res, next) => {
     }
 }
 
+const handleResetUrl = async (req, res, next) => {
+    try {
+        const {code} = req.params;
+
+        const query = {short: code};
+        const options = {
+            projection: {_id: 0, userEmail: 1}
+        };
+
+        const email = await Url.findOne(query, null, options);
+        
+        if(req.useremail === email.userEmail){
+            await Url.updateOne(
+                {
+                    short: code
+                },
+                {
+                    $unset: {analytics: []}
+                }
+            );
+            return res.status(200).json({msg: 'success'});
+        }
+
+        return res.status(401).json({msg: 'Unauthotized access'});
+    } catch (error) {
+        next(error);
+    }
+}
+
 export{
     handleUserGet,
     handleGetUrls,
-    handleDeleteUrl
+    handleDeleteUrl,
+    handleResetUrl
 }
