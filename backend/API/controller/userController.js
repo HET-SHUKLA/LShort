@@ -1,4 +1,5 @@
 import { Url } from "../models/UrlSchema.js";
+import { findExistingShort } from "./url.js";
 
 const handleUserGet = (req, res) => {
     if(req.useremail){
@@ -81,9 +82,86 @@ const handleResetUrl = async (req, res, next) => {
     }
 }
 
+const handleLongEdit = async (req, res, next) => {
+    try {
+        const {code} = req.params;
+
+        const query = {short: code};
+        const options = {
+            projection: {_id: 0, userEmail: 1}
+        };
+
+        const email = await Url.findOne(query, null, options);
+        
+        if(req.useremail === email.userEmail){
+            const {fullUrl, newUrl} = req.body;
+
+            if(!fullUrl || !validator.isURL(fullUrl, {
+                require_host: true, 
+                require_tld: true
+            })){
+                return res.status(400).json({msg: 'Provide a valid URL'});
+            }
+
+            await Url.updateOne(
+                {
+                    short: code
+                },
+                {
+                    $set: {long: newUrl}
+                }
+            );
+
+            return res.status(200).json({msg: 'success'});
+        }
+
+        return res.status(401).json({msg: 'Unauthotized access'});
+    } catch (error) {
+        next(error);
+    }
+}
+
+const handleShortEdit = async (req, res, next) => {
+    try {
+        const {code} = req.params;
+
+        const query = {short: code};
+        const options = {
+            projection: {_id: 0, userEmail: 1}
+        };
+
+        const email = await Url.findOne(query, null, options);
+        
+        if(req.useremail === email.userEmail){
+            const {newShortUrl} = req.body;
+
+            if(findExistingShort(newShortUrl)){
+                return res.status(405).json({msg: 'Url is already exists'});
+            }
+
+            await Url.updateOne(
+                {
+                    short: code
+                },
+                {
+                    $set: {short: newShortUrl}
+                }
+            );
+
+            return res.status(200).json({msg: 'success'});
+        }
+
+        return res.status(401).json({msg: 'Unauthotized access'});
+    } catch (error) {
+        next(error);
+    }
+}
+
 export{
     handleUserGet,
     handleGetUrls,
     handleDeleteUrl,
-    handleResetUrl
+    handleResetUrl,
+    handleShortEdit,
+    handleLongEdit
 }

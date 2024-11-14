@@ -234,5 +234,6 @@ export {
     handleNewUrl,
     handleRedirectUrl,
     handleGetClick,
-    handleAnalyticUrl
+    handleAnalyticUrl,
+    findExistingShort
 }
