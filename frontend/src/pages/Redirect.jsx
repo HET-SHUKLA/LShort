@@ -8,7 +8,7 @@ const Redirect = () => {
     useEffect(() => {
         
         //API request
-        axios.get(`https://short-eta.vercel.app/api/v1/shortUrls/${code}`)
+        axios.get(`${import.meta.env.VITE_API_URL}/api/v1/shortUrls/${code}`)
         .then((res) => {
             let targetUrl = res.data.data;
 

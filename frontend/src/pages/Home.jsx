@@ -28,7 +28,7 @@ const Home = () => {
 
         axios.post(`${import.meta.env.VITE_API_URL}/api/v1/shortUrls`, params)
         .then((res) => {
-            setShort(`https://short-eta.vercel.app//${res.data.data}`);
+            setShort(`https://short-eta.vercel.app/${res.data.data}`);
         })
         .catch((err) => {
             setShort(err.response.data.msg);
