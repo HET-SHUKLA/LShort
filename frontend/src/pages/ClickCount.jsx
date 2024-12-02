@@ -19,7 +19,8 @@ const ClickCount = () => {
     }
 
     const handleSigninClick = () => {
-        window.location.href = '/api/v1/auth/google';
+        window.location.href = `${import.meta.env.VITE_API_URL}/api/v1/auth/google`;
+
         // axios.get('/api/v1/auth/google')
         // .then((res) => {
         //     if(res.data.data){
