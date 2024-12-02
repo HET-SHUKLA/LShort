@@ -236,7 +236,7 @@ const Analytics = () => {
 
             <div className='w-11/12 bg-gray-900 flex flex-col justify-center rounded-xl my-1 p-2'>
                 <p className='text-white text-xl text-center'>Country and Region wise click</p>
-                <button onClick={handleZoomOut}>Zoom Out</button>
+                <button className='self-center w-1/12 bg-blue-500 p-2 text-white rounded-md' onClick={handleZoomOut}>Zoom Out</button>
                 <Chart
                     chartEvents={[
                         {
@@ -260,7 +260,12 @@ const Analytics = () => {
                     width="100%"
                     height="100%"
                     data={calendar}
-
+                    options={{
+                        noDataPattern: {
+                            backgroundColor: '#76a7fa',
+                            color: '#f2f5f3'
+                        }
+                    }}
                 />
             </div>
 
@@ -294,8 +299,8 @@ const Analytics = () => {
                 <p className='text-white text-xl text-center'>Other data like City and Longitude and Latitude of the user are available, you can download your data either in JSON or CSV formate.</p>
                 
                 <div>
-                    <button onClick={() => downloadAsJSON(data.analytics)} className='mx-5'>Download JSON</button>
-                    <button onClick={() => downloadAsCSV(data.analytics)} className='mx-5'>Download CSV</button>
+                    <button onClick={() => downloadAsJSON(data.analytics)} className='mx-5 bg-blue-500 p-2 text-white rounded-md'>Download JSON</button>
+                    <button onClick={() => downloadAsCSV(data.analytics)} className='mx-5 bg-blue-500 p-2 text-white rounded-md'>Download CSV</button>
                 </div>
             </div>
 

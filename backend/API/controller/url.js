@@ -20,26 +20,28 @@ function getIPv4(ip) {
 
 async function getIpData(ip4){
     const ipReq = `https://ipinfo.io/${ip4}`;
+    
     const instance = axios.create({
         baseURL: ipReq,
         headers: {'Authorization': `Bearer ${ipToken}`}
-      });
+    });
       
-    const res = await instance.get('');
+    const res = await instance.get('');    
     return res.data;
 }
 
 async function getUserDetail(code, ua, ip){
 
     //Ip Data
+
     const ip4 = getIPv4(ip);
     const data = await getIpData(ip4);
     
     const ipData = {
-        'city': data ? data.city : 'not fetched',
-        'region' : data ? data.region : 'not fetched',
-        'country' : data ? data.country : 'not fetched',
-        'loc' : data ? data.loc : 'not fetched',
+        'city': data.city || 'not fetched',
+        'region' : data.region || 'not fetched',
+        'country' : data.country || 'not fetched',
+        'loc' : data.loc || 'not fetched',
     }
 
     //Current Time
