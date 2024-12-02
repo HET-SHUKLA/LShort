@@ -65,7 +65,7 @@ const Dashboard = () => {
     }, [search, backup]);
 
     useEffect(() => {
-        axios.get(`/api/v1/user`)
+        axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user`)
         .then((res) => {
             if(res.data.data){
                 setEmail(res.data.data);
