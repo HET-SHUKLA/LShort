@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server: {
     proxy: {
-      '/api': 'lshort',
+      '/api': 'https://lshort.up.railway.app/',
     }
   },
   plugins: [react()],
