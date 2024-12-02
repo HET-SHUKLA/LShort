@@ -16,7 +16,7 @@ const Dashboard = () => {
 
     const getData = () => {
         if(email !== ''){
-            axios.get('/api/v1/user/urls')
+            axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/urls`)
             .then((res) => {
                 setData(res.data.data);
                 setBackup(res.data.data);
@@ -41,7 +41,7 @@ const Dashboard = () => {
     }
 
     const logout = () => {
-        axios.get('/api/v1/auth/logout')
+        axios.get(`${import.meta.env.VITE_API_URL}/api/v1/auth/logout`)
         .then((res) => {
             navigate('/');
         })

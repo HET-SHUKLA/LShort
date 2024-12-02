@@ -12,7 +12,7 @@ const Home = () => {
     useEffect(() => {
         console.log(`aaa : `);
 
-        axios.get(`/api/v1/user`)
+        axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user`)
         .then((res) => {
             if(res.data.data){
                 console.log(`aaa : `+res.data.data);
