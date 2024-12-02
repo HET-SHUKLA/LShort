@@ -64,7 +64,7 @@ const Analytics = () => {
     };
 
     useEffect(() => {
-        axios.get(`/api/v1/shortUrls/analytics/${short}`)
+        axios.get(`${import.meta.env.VITE_API_URL}/api/v1/shortUrls/analytics/${short}`)
         .then(res => {
             const data = res.data.data;
             setData(data);

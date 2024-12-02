@@ -9,7 +9,7 @@ const ClickCount = () => {
     const shortUrl = () => {
         let last6 = url.substring(url.length-6, url.length);
         
-        axios.get(`/api/v1/shortUrls/${last6}/click`)
+        axios.get(`${import.meta.env.VITE_API_URL}/api/v1/shortUrls/${last6}/click`)
         .then((res) => {
             setCount(res.data.data);
         })

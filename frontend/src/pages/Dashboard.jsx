@@ -30,9 +30,9 @@ const Dashboard = () => {
         const params = new URLSearchParams();
         params.append('fullUrl', url);
 
-        axios.post('/api/v1/shortUrls', params)
+        axios.post(`${import.meta.env.VITE_API_URL}/api/v1/shortUrls`, params)
         .then((res) => {
-            setShort(`localhost:5173/${res.data.data}`);
+            setShort(`https://short-eta.vercel.app/${res.data.data}`);
             getData();
         })
         .catch((err) => {
