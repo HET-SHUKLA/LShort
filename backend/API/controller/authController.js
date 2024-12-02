@@ -149,7 +149,7 @@ const handleGoogleRedirect = async (req, res, next) => {
                         maxAge: remember ? 604800000 : 3600000,
                     });
 
-                    res.redirect('http://localhost:5173/dashboard');
+                    res.redirect('http://short-eta.vercel.app/dashboard');
                 }else{
                     res.status(500).json({msg: 'Internal Server Error'});
                 }
@@ -176,7 +176,7 @@ const handleGoogleRedirect = async (req, res, next) => {
                     maxAge: remember ? 604800000 : 3600000,
                 });
 
-                res.redirect('http://localhost:5173/dashboard');
+                res.redirect('http://short-eta.vercel.app/dashboard');
             }else{
                 res.status(500).json({msg: 'Internal Server Error'});
             }
